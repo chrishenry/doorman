@@ -7,12 +7,12 @@ import (
 	"github.com/jessevdk/go-flags"
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
+
+	"github.com/chrishenry/twilio"
 )
 
 type doorman struct {
-	twilio *string
-	host   *string
-	port   *string
+	twilio *twilio.Client
 }
 
 func answer(c *echo.Context) error {
@@ -30,15 +30,23 @@ func main() {
 
 		Port string `short:"p" long:"Port" description:"Port to run on" required:"true"`
 
-		TwilioSid string `short:"s" long:"sid" description:"Twilio SID" required:"true"`
+		TwilioSID string `short:"s" long:"sid" description:"Twilio SID" env:"TWILIO_SID"`
 
-		TwilioToken string `short:"t" long:"token" description:"Twilio Token" required:"true"`
+		TwilioToken string `short:"t" long:"token" description:"Twilio Token" env:"TWILIO_TOKEN"`
 	}
 
 	_, err := flags.Parse(&opts)
 
 	if err != nil {
 		panic(err)
+	}
+
+	if len(opts.TwilioSID) == 0 {
+		panic("Twilio SID is required")
+	}
+
+	if len(opts.TwilioToken) == 0 {
+		panic("Twilio Token is required")
 	}
 
 	// Echo instance
