@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/xml"
 	"fmt"
 	"net/http"
 
@@ -8,32 +9,51 @@ import (
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
 
-	"github.com/chrishenry/twilio"
+	// "github.com/chrishenry/twilio"
 )
 
-type doorman struct {
-	twilio *twilio.Client
+// type doorman struct {
+// 	twilio *twilio.Client
+// }
+
+var opts struct {
+	// Slice of bool will append 'true' each time the option
+	// is encountered (can be set multiple times, like -vvv)
+	Verbose bool `short:"v" long:"verbose" description:"Show verbose debug information" default:"false"`
+
+	Port string `short:"p" long:"Port" description:"Port to run on" required:"true"`
+
+	TwilioSID string `short:"s" long:"sid" description:"Twilio SID" env:"TWILIO_SID"`
+
+	TwilioToken string `short:"t" long:"token" description:"Twilio Token" env:"TWILIO_TOKEN"`
+}
+
+type TwiML struct {
+	XMLName xml.Name `xml:"Response"`
+	Say     string   `xml:",omitempty"`
+}
+
+func debug(c *echo.Context) error {
+	return c.String(http.StatusOK, "Hello\n")
 }
 
 func answer(c *echo.Context) error {
-	return c.String(http.StatusOK, "answer POST\n")
+	twiml := TwiML{Say: "Hello World!"}
+	x, err := xml.MarshalIndent(twiml, "  ", "  ")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var retval = string(x)
+
+	fmt.Println(retval)
+
+	return c.String(http.StatusOK, retval)
 }
 
 func main() {
 
 	fmt.Println("Starting Doorman")
-
-	var opts struct {
-		// Slice of bool will append 'true' each time the option
-		// is encountered (can be set multiple times, like -vvv)
-		Verbose bool `short:"v" long:"verbose" description:"Show verbose debug information" default:"false"`
-
-		Port string `short:"p" long:"Port" description:"Port to run on" required:"true"`
-
-		TwilioSID string `short:"s" long:"sid" description:"Twilio SID" env:"TWILIO_SID"`
-
-		TwilioToken string `short:"t" long:"token" description:"Twilio Token" env:"TWILIO_TOKEN"`
-	}
 
 	_, err := flags.Parse(&opts)
 
@@ -60,7 +80,7 @@ func main() {
 	e.Use(mw.Recover())
 
 	// Routes
-	e.Index("public/index.html")
+	e.Get("/", debug)
 
 	// Deployment Routes
 	e.Post("/v1/answer", answer)
