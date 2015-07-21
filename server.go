@@ -75,6 +75,15 @@ func answer(c *echo.Context) error {
 	return c.XML(http.StatusOK, response)
 }
 
+func verify(c *echo.Context) error {
+	response := TwimlGatherResponse{
+		Say:      "I didn't quite get that. Please call again.",
+		Redirect: "/v1/error",
+	}
+
+	return c.XML(http.StatusOK, response)
+}
+
 func main() {
 
 	fmt.Println("Starting Doorman")
@@ -108,6 +117,7 @@ func main() {
 
 	// Deployment Routes
 	e.Post("/v1/answer", answer)
+	e.Post("/v1/verify", verify)
 
 	// Start server
 	e.Run(":" + opts.Port)
