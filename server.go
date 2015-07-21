@@ -10,10 +10,6 @@ import (
 	mw "github.com/labstack/echo/middleware"
 )
 
-// type doorman struct {
-// 	twilio *twilio.Client
-// }
-
 var opts struct {
 	// Slice of bool will append 'true' each time the option
 	// is encountered (can be set multiple times, like -vvv)
@@ -73,13 +69,6 @@ func answer(c *echo.Context) error {
 		Say:      "I didn't quite get that. Please call again.",
 		Redirect: "/v1/error",
 	}
-
-	// x, err := xml.MarshalIndent(response, "  ", "  ")
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-
-	// var retval = xml.Header + string(x)
 
 	fmt.Println(response)
 
