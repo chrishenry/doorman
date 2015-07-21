@@ -3,23 +3,13 @@
 	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
-			"ImportPath": "bitbucket.org/pkg/inflect",
-			"Comment": "go.r60-12",
-			"Rev": "8961c3750a47b8c0b3e118d52513b97adf85a7e8"
-		},
-		{
 			"ImportPath": "github.com/bradfitz/http2",
 			"Rev": "f8202bc903bda493ebba4aa54922d78430c2c42f"
 		},
 		{
-			"ImportPath": "github.com/chrishenry/twilio",
-			"Comment": "v0.0.1-22-gca29365",
-			"Rev": "ca29365f195cd8e9dfb805d4b8aca69ce8057564"
-		},
-		{
-			"ImportPath": "github.com/dgrijalva/jwt-go",
-			"Comment": "v2.2.0-28-g2e53eb6",
-			"Rev": "2e53eb673c4450614e3bca6f345197f9527dce71"
+			"ImportPath": "github.com/jessevdk/go-flags",
+			"Comment": "v1-297-g1b89bf7",
+			"Rev": "1b89bf73cd2c3a911d7b2a279ab085c4a18cf539"
 		},
 		{
 			"ImportPath": "github.com/labstack/echo",
@@ -30,14 +20,6 @@
 			"ImportPath": "github.com/labstack/gommon/color",
 			"Comment": "v0.0.3-5-g3dc2d67",
 			"Rev": "3dc2d67251832fa0da35728aada6a9c377cb2442"
-		},
-		{
-			"ImportPath": "github.com/mattn/go-colorable",
-			"Rev": "d67e0b7d1797975196499f79bcc322c08b9f218b"
-		},
-		{
-			"ImportPath": "github.com/subosito/figo",
-			"Rev": "4f2709582c104a76b1ef6c24d47a682ec1b085c3"
 		},
 		{
 			"ImportPath": "golang.org/x/net/websocket",

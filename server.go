@@ -8,8 +8,6 @@ import (
 	"github.com/jessevdk/go-flags"
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
-
-	// "github.com/chrishenry/twilio"
 )
 
 // type doorman struct {
@@ -28,9 +26,26 @@ var opts struct {
 	TwilioToken string `short:"t" long:"token" description:"Twilio Token" env:"TWILIO_TOKEN"`
 }
 
-type TwiML struct {
-	XMLName xml.Name `xml:"Response"`
-	Say     string   `xml:",omitempty"`
+type TwimlGatherResponse struct {
+	XMLName  xml.Name `xml:"Response"`
+	Pause    TwimlPause
+	Gather   TwimlGather
+	Say      string
+	Redirect string
+}
+
+type TwimlPause struct {
+	XMLName xml.Name `xml:"Pause"`
+	Length  int      `xml:"length,attr"`
+}
+
+type TwimlGather struct {
+	Method    string `xml:"method,attr"`
+	NumDigits int    `xml:"numDigits,attr"`
+	Action    string `xml:"action,attr"`
+	TimeOut   int    `xml:"timeout,attr"`
+	Say       string
+	Pause     TwimlPause
 }
 
 func debug(c *echo.Context) error {
@@ -38,17 +53,37 @@ func debug(c *echo.Context) error {
 }
 
 func answer(c *echo.Context) error {
-	twiml := TwiML{Say: "Hello World!"}
-	x, err := xml.MarshalIndent(twiml, "  ", "  ")
-	if err != nil {
-		panic(err.Error())
+
+	pause := TwimlPause{
+		Length: 3,
 	}
 
-	var retval = string(x)
+	gather := TwimlGather{
+		Method:    "POST",
+		NumDigits: 2,
+		Action:    "/v1/verify",
+		TimeOut:   60,
+		Say:       "Press 1 to enter PIN, Press 2 to say password.",
+		Pause:     pause,
+	}
 
-	fmt.Println(retval)
+	response := TwimlGatherResponse{
+		Pause:    pause,
+		Gather:   gather,
+		Say:      "I didn't quite get that. Please call again.",
+		Redirect: "/v1/error",
+	}
 
-	return c.String(http.StatusOK, retval)
+	// x, err := xml.MarshalIndent(response, "  ", "  ")
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+
+	// var retval = xml.Header + string(x)
+
+	fmt.Println(response)
+
+	return c.XML(http.StatusOK, response)
 }
 
 func main() {
