@@ -1,0 +1,35 @@
+{
+  "name": "doorman",
+  "version": "1.0.0",
+  "description": "Knock on my door",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^0.9.0"
+  },
+  "bundleDependencies": [
+    "async"
+  ],
+  "devDependencies": {
+    "aws-sdk": "latest",
+    "grunt": "latest",
+    "grunt-aws-lambda": "latest",
+    "npm": "latest"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrishenry/doorman.git"
+  },
+  "keywords": [
+    "twilio",
+    "lambda"
+  ],
+  "author": "Chris Henry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrishenry/doorman/issues"
+  },
+  "homepage": "https://github.com/chrishenry/doorman#readme"
+}
